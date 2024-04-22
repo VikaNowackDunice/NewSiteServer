@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
-import { Tag } from '../model/tag.model';
+import { Tag } from './tag.model';
 import { CreateTagDto } from '../dto/create-tag.dto';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class TagService {
       const tag = await this.tagRepository.create(tagDto);
       return tag;
     } catch (error) {
-      throw new NotFoundException('Tag not found');
+      throw new NotFoundException(error.message);
     }
   }
 
@@ -47,7 +47,7 @@ export class TagService {
       }
       return tag[0];
     } catch (error) {
-      throw new NotFoundException(`Tag was not ${id}`);
+      throw new NotFoundException(error.message);
     }
   }
 

@@ -7,10 +7,10 @@ import {
 } from 'sequelize-typescript';
 
 import { TagCreate } from '../types/tag';
-import { Post } from './post.model';
-import { PostTag } from './post-tag.model';
+import { Post } from '../post/post.model';
+import { PostTag } from '../PostTags/post-tag.model';
 
-@Table({ tableName: 'tag' })
+@Table({ tableName: 'Tag' })
 export class Tag extends Model<Tag, TagCreate> {
   @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
@@ -19,7 +19,7 @@ export class Tag extends Model<Tag, TagCreate> {
   name: string;
 
   @BelongsToMany(() => Post, () => PostTag)
-  content: Post[];
+  content: (Post & { PostTag: PostTag })[];
 
   @Column({ type: DataType.DATE })
   createdAt;

@@ -8,7 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/sequelize';
 import { JwtService } from '@nestjs/jwt';
 
-import { User } from '../model/user.model';
+import { User } from './user.model';
 import { CreateAuthorDto, LoginAuthorDto } from '../dto/create-author.dto';
 import { JwtAuthService } from './jwt/jwt.strategy';
 import { AppError } from 'src/common/errors';
@@ -64,7 +64,7 @@ export class AuthService {
       id: existAuthor.id,
       email: existAuthor.email,
       login: existAuthor.login,
-      image: existAuthor.image,
+      image: existAuthor.img,
     };
     const token = await this.jwtauthService.sign(authorData);
     delete authorData['password'];
@@ -93,7 +93,7 @@ export class AuthService {
     }
   }
 
-  async update(image: string, dto: CreateAuthorDto) {
-    return this.authorRepository.update(dto, { where: { image } });
+  async update(img: string, dto: CreateAuthorDto) {
+    return this.authorRepository.update(dto, { where: { img } });
   }
 }

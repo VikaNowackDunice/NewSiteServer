@@ -9,11 +9,11 @@ import {
 } from 'sequelize-typescript';
 
 import { ContentCreate } from '../types/post';
-import { User } from './user.model';
-import { PostTag } from './post-tag.model';
-import { Tag } from './tag.model';
+import { User } from '../author/user.model';
+import { Tag } from '../tag/tag.model';
+import { PostTag } from '../PostTags/post-tag.model';
 
-@Table({ tableName: 'post' })
+@Table({ tableName: 'Post' })
 export class Post extends Model<Post, ContentCreate> {
   @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
@@ -24,8 +24,8 @@ export class Post extends Model<Post, ContentCreate> {
   @Column({ type: DataType.TEXT, allowNull: false })
   content: string;
 
-  @Column({ type: DataType.STRING })
-  image: string;
+  @Column({ type: DataType.STRING, allowNull: false })
+  img: string;
 
   @ForeignKey(() => User)
   @Column
@@ -35,7 +35,7 @@ export class Post extends Model<Post, ContentCreate> {
   user: User;
 
   @BelongsToMany(() => Tag, () => PostTag)
-  tags: Tag[];
+  tags: (Tag & { PostTag: PostTag })[];
 
   @Column({ type: DataType.DATE })
   createdAt;

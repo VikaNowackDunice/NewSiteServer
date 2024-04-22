@@ -3,7 +3,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { User } from '../model/user.model';
+import { User } from './user.model';
 import { AuthorController } from './author.controller';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './jwt/local.strategy';

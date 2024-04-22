@@ -5,7 +5,7 @@ export class CreatPostDto {
   id: number;
 
   @IsString()
-  text: string;
+  content: string;
 
   @IsString()
   theme: string;

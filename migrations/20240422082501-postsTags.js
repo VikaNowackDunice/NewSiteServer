@@ -2,34 +2,25 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Post', {
+    await queryInterface.createTable('PostTag', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      text: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      theme: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      image: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      userId: {
+      postId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'NewsAuthor',
+          model: 'Post',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      tagId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Tag',
           key: 'id',
         },
         onUpdate: 'CASCADE',
@@ -37,12 +28,15 @@ module.exports = {
       },
       createdAt: {
         type: Sequelize.DATE,
-        allowNull: false,
+        defaultValue: Sequelize.literal('NOW()'),
       },
       updatedAt: {
         type: Sequelize.DATE,
-        allowNull: false,
+        defaultValue: Sequelize.literal('NOW()'),
       },
     });
+  },
+  down: async (queryInterface) => {
+    return queryInterface.dropTable('PostTag');
   },
 };

@@ -13,8 +13,8 @@ import { ValidationPipe } from '@nestjs/common';
 
 import { CreateAuthorDto, LoginAuthorDto } from '../dto/create-author.dto';
 import { AuthService } from './auth.service';
-import { User } from '../model/user.model';
-import { JwtAuthorGuard } from '../guards/jwt.guard';
+import { User } from './user.model';
+import { JwtAuthorGuard } from './guards/jwt.guard';
 
 @Controller('author')
 export class AuthorController {

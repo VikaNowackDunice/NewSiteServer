@@ -11,6 +11,9 @@ export class CreateAuthorDto {
   login: string;
 
   @IsString()
+  img: string;
+
+  @IsString()
   password: string;
 }
 

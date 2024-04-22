@@ -2,47 +2,54 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('NewsAuthor', {
+    await queryInterface.createTable('Post', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      email: {
-        type: Sequelize.STRING,
+      content: {
+        type: Sequelize.TEXT,
         allowNull: false,
-        unique: true,
         validate: {
           notEmpty: true,
         },
       },
-      login: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      password: {
+      theme: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
           notEmpty: true,
         },
       },
-      image: {
+      img: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: true,
+          isUrl: true,
+        },
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'NewsAuthor',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       createdAt: {
         type: Sequelize.DATE,
-        allowNull: false,
+        defaultValue: Sequelize.literal('NOW()'),
       },
       updatedAt: {
         type: Sequelize.DATE,
-        allowNull: false,
+        defaultValue: Sequelize.literal('NOW()'),
       },
     });
+  },
+  down: async (queryInterface) => {
+    return queryInterface.dropTable('Post');
   },
 };

@@ -5,12 +5,11 @@ import {
   Column,
   DataType,
 } from 'sequelize-typescript';
-
+import { Post } from '../post/post.model';
 import { ContentTagCreate } from '../types/tags-post';
-import { Post } from './post.model';
-import { Tag } from './tag.model';
+import { Tag } from '../tag/tag.model';
 
-@Table({ tableName: 'post_tag' })
+@Table({ tableName: 'PostTag' })
 export class PostTag extends Model<PostTag, ContentTagCreate> {
   @ForeignKey(() => Post)
   postId: number;

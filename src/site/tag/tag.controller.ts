@@ -10,7 +10,7 @@ import {
 import { CreateTagDto } from '../dto/create-tag.dto';
 import { TagService } from './tag.service';
 
-@Controller()
+@Controller('/tag')
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
