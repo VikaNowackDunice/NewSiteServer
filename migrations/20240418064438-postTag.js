@@ -2,25 +2,25 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('ContentTheme', {
+    await queryInterface.createTable('PostTag', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      contentId: {
+      postId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Content',
+          model: 'Post',
           key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      themeId: {
+      tagId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Theme',
+          model: 'Tag',
           key: 'id',
         },
         onUpdate: 'CASCADE',

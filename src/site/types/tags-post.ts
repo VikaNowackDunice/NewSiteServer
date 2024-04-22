@@ -1,5 +1,5 @@
 export interface ContentTagCreate {
   id: number;
-  contentId: number;
+  postId: number;
   tagId: number;
 }

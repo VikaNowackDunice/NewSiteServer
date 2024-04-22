@@ -1,6 +1,6 @@
 export interface ContentCreate {
   id: number;
-  header: string;
+  theme: string;
   content: string;
   image?: Buffer;
 }

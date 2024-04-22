@@ -1,10 +1,10 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 
-import { AuthorCreate } from '../types/author';
-import { Content } from './content.model';
+import { UserCreate } from '../types/user';
+import { Post } from './post.model';
 
 @Table({ tableName: 'NewsAuthor' })
-export class Author extends Model<Author, AuthorCreate> {
+export class User extends Model<User, UserCreate> {
   @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
@@ -26,6 +26,6 @@ export class Author extends Model<Author, AuthorCreate> {
   @Column({ type: DataType.DATE })
   updatedAt;
 
-  @HasMany(() => Content)
-  content: Content[];
+  @HasMany(() => Post)
+  post: Post[];
 }

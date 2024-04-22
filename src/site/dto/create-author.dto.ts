@@ -19,7 +19,7 @@ export class LoginAuthorDto {
   id?: number;
 
   @IsString()
-  login: string;
+  login?: string;
 
   @IsEmail()
   email: string;

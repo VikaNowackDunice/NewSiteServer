@@ -6,14 +6,14 @@ import {
   DataType,
 } from 'sequelize-typescript';
 
-import { ContentTagCreate } from '../types/content_tag';
-import { Content } from './content.model';
+import { ContentTagCreate } from '../types/tags-post';
+import { Post } from './post.model';
 import { Tag } from './tag.model';
 
-@Table({ tableName: 'content_tag' })
-export class ContentTag extends Model<ContentTag, ContentTagCreate> {
-  @ForeignKey(() => Content)
-  contentId: number;
+@Table({ tableName: 'post_tag' })
+export class PostTag extends Model<PostTag, ContentTagCreate> {
+  @ForeignKey(() => Post)
+  postId: number;
 
   @ForeignKey(() => Tag)
   tagId: number;

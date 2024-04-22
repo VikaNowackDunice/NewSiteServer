@@ -13,7 +13,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 import { CreateAuthorDto, LoginAuthorDto } from '../dto/create-author.dto';
 import { AuthService } from './auth.service';
-import { Author } from '../model/author.model';
+import { User } from '../model/user.model';
 import { JwtAuthorGuard } from '../guards/jwt.guard';
 
 @Controller('author')
@@ -26,16 +26,14 @@ export class AuthorController {
     return this.authService.createAuthor(dto);
   }
 
-  @UseGuards(JwtAuthorGuard)
   @Post('login')
-  login(@Body() dto: LoginAuthorDto, @Req() request) {
-    console.log('token4');
-    return this.authService.login(request.dto);
+  login(@Body() dto: LoginAuthorDto) {
+    return this.authService.login(dto);
   }
 
   @UseGuards(JwtAuthorGuard)
   @Get('whoami')
-  verify(@Request() req: Request & { author: Author }) {
+  verify(@Request() req: Request & { author: User }) {
     req.author;
   }
 

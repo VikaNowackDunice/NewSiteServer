@@ -2,16 +2,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 
-import { Author } from './site/model/author.model';
-import { Content } from './site/model/content.model';
+import { User } from './site/model/user.model';
+import { Post } from './site/model/post.model';
 import { Tag } from './site/model/tag.model';
-import { Theme } from './site/model/theme.model';
-import { ContentTag } from './site/model/content_tag.model';
-import { ContentTheme } from './site/model/content_theme.model';
-import { ContentModule } from './site/content/content.module';
-import { ThemeModule } from './site/theme/theme.module';
+import { PostTag } from './site/model/post-tag.model';
 import { TagModule } from './site/tag/tag.module';
-import { AuthorModule } from './site/author/author.module';
+import { UserModule } from './site/author/author.module';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthModule } from './site/author/jwt/jwt.module';
+import { PostModule } from './site/post/post.module';
 
 @Module({
   imports: [
@@ -25,14 +24,15 @@ import { AuthorModule } from './site/author/author.module';
         username: config.get('POSTGRE_USERNAME'),
         password: config.get('POSTGRE_PASSWORD'),
         database: config.get('POSTGRE_DATABASE'),
-        models: [Author, Content, Tag, Theme, ContentTag, ContentTheme],
+        models: [User, Post, Tag, PostTag],
       }),
       inject: [ConfigService],
     }),
-    AuthorModule,
-    ContentModule,
-    ThemeModule,
+    UserModule,
+    PostModule,
     TagModule,
+    JwtAuthModule,
+    JwtModule,
   ],
 })
 export class AppModule {}

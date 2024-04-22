@@ -8,27 +8,22 @@ import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/sequelize';
 import { JwtService } from '@nestjs/jwt';
 
-import { Author } from '../model/author.model';
+import { User } from '../model/user.model';
 import { CreateAuthorDto, LoginAuthorDto } from '../dto/create-author.dto';
 import { JwtAuthService } from './jwt/jwt.strategy';
 import { AppError } from 'src/common/errors';
-import Op from 'sequelize/types/operators';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(Author)
-    private readonly authorRepository: typeof Author,
-    private readonly jwtauthService: JwtAuthService,
+    @InjectModel(User)
+    private readonly authorRepository: typeof User,
     private readonly jwtService: JwtService,
+    private readonly jwtauthService: JwtAuthService,
   ) {}
 
   async hashPassword(password) {
     return bcrypt.hash(password, 10);
-  }
-
-  async generateToken(id: number): Promise<string> {
-    return await this.jwtService.signAsync({ id });
   }
 
   async createAuthor({
@@ -37,7 +32,7 @@ export class AuthService {
     password,
   }: LoginAuthorDto): Promise<{ login: string; token: string }> {
     const existingAuthor = await this.authorRepository.findOne({
-      where: { [Op.or]: [{ login }, { email }] },
+      where: { login, email },
     });
     if (existingAuthor) {
       throw new NotFoundException(' The author already exists');
@@ -49,30 +44,31 @@ export class AuthService {
       password: hashedPassword,
     };
     const author = await this.authorRepository.create(newAuthor);
-    const token = await this.generateToken(author.id);
+    const token = await this.jwtauthService.sign(author.id);
     return { login, token };
   }
 
-  async login(dto: LoginAuthorDto): Promise<LoginAuthorDto> {
-    const exisAuthor = await this.authorRepository.findOne({
+  async login(dto: LoginAuthorDto): Promise<string> {
+    console.log(dto);
+    const existAuthor = await this.authorRepository.findOne({
       where: { email: dto.email },
     });
-    if (!exisAuthor) throw new BadRequestException(AppError.USER_NOT_EXIST);
+    if (!existAuthor) throw new BadRequestException(AppError.USER_NOT_EXIST);
     const validatePassword = await bcrypt.compare(
       dto.password,
-      exisAuthor.password,
+      existAuthor.password,
     );
     if (!validatePassword)
       throw new BadRequestException(AppError.USER_NOT_EXIST);
     const authorData = {
-      id: exisAuthor.id,
-      email: exisAuthor.email,
-      login: exisAuthor.login,
-      image: exisAuthor.image,
+      id: existAuthor.id,
+      email: existAuthor.email,
+      login: existAuthor.login,
+      image: existAuthor.image,
     };
-    const token = await this.generateToken(authorData.id);
+    const token = await this.jwtauthService.sign(authorData);
     delete authorData['password'];
-    return { ...exisAuthor, token };
+    return token;
   }
 
   async validateAuthor(username: string, pass: string): Promise<any> {
@@ -85,7 +81,7 @@ export class AuthService {
     return author.dataValues;
   }
 
-  async validateToken(id: number): Promise<Author> {
+  async validateToken(id: number): Promise<User> {
     try {
       const author = await this.authorRepository.findByPk(id, {
         attributes: ['login', 'email', 'createdAt', 'updatedAt'],

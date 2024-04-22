@@ -1,16 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
-import { Content } from '../model/content.model';
-import { CreateContentDto } from '../dto/create-content.dto';
+import { Post } from '../model/post.model';
+import { CreatPostDto } from '../dto/create-post.dto';
 
 @Injectable()
-export class ContentService {
+export class PostService {
   constructor(
-    @InjectModel(Content) private readonly contentRepository: typeof Content,
+    @InjectModel(Post) private readonly contentRepository: typeof Post,
   ) {}
 
-  async getAllContent(): Promise<Content[]> {
+  async getAllContent(): Promise<Post[]> {
     try {
       const getAllContent = await this.contentRepository.findAll();
       return getAllContent;
@@ -18,7 +18,7 @@ export class ContentService {
       throw new NotFoundException('Content not found');
     }
   }
-  async getOneContent(id: number): Promise<Content> {
+  async getOneContent(id: number): Promise<Post> {
     try {
       const content = await this.contentRepository.findOne({
         where: {
@@ -27,34 +27,31 @@ export class ContentService {
       });
       return content;
     } catch {
-      throw new NotFoundException('Content not found');
+      throw new NotFoundException('Post not found');
     }
   }
 
-  async createContent(contentDto: CreateContentDto): Promise<Content> {
+  async createContent(postDto: CreatPostDto): Promise<Post> {
     try {
-      const content = await this.contentRepository.create(contentDto);
+      const content = await this.contentRepository.create(postDto);
       return content;
     } catch {
-      throw new NotFoundException('Failed to create content');
+      throw new NotFoundException('Failed to create post');
     }
   }
 
-  async updateContentOne(
-    contentDto: CreateContentDto,
-    id: number,
-  ): Promise<Content> {
+  async updateContentOne(postDto: CreatPostDto, id: number): Promise<Post> {
     try {
       const [updateContent] = await this.contentRepository.update(
-        { content: contentDto.text, header: contentDto.header },
+        { content: postDto.text, theme: postDto.theme },
         { where: { id } },
       );
       if (updateContent === 0) {
-        throw new NotFoundException(`Content with is ${id} was not found`);
+        throw new NotFoundException(`Post with is ${id} was not found`);
       }
       return updateContent[0];
     } catch (error) {
-      throw new NotFoundException(`Content item was not ${id}`);
+      throw new NotFoundException(`Post item was not ${id}`);
     }
   }
 

@@ -10,7 +10,9 @@ export class JwtAuthService {
   ) {}
 
   async sign(payload: any): Promise<string> {
-    return this.jwtService.sign(payload);
+    return this.jwtService.sign(payload, {
+      secret: this.config.get('SECRET'),
+    });
   }
 
   async verify(token: string): Promise<any> {
@@ -20,7 +22,7 @@ export class JwtAuthService {
   // async generateJwtToken(author) {
   //   const payload = { author };
   //   return this.jwtService.sign(payload, {
-  //     secret: this.config.get('secret_jwt'),
+  //     secret: this.config.get('SECRET'),
   //     expiresIn: this.config.get('expire_jwt'),
   //   });
   // }

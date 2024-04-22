@@ -3,7 +3,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { Author } from '../model/author.model';
+import { User } from '../model/user.model';
 import { AuthorController } from './author.controller';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './jwt/local.strategy';
@@ -14,7 +14,7 @@ import { JwtAuthService } from './jwt/jwt.strategy';
   controllers: [AuthorController],
   providers: [AuthService, LocalStrategy, JwtAuthService],
   imports: [
-    SequelizeModule.forFeature([Author]),
+    SequelizeModule.forFeature([User]),
     PassportModule,
     ConfigModule.forRoot({ isGlobal: true }),
     JwtModule.registerAsync({
@@ -28,4 +28,4 @@ import { JwtAuthService } from './jwt/jwt.strategy';
   ],
   exports: [AuthService],
 })
-export class AuthorModule {}
+export class UserModule {}

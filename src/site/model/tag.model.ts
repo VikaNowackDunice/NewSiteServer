@@ -7,8 +7,8 @@ import {
 } from 'sequelize-typescript';
 
 import { TagCreate } from '../types/tag';
-import { Content } from './content.model';
-import { ContentTag } from './content_tag.model';
+import { Post } from './post.model';
+import { PostTag } from './post-tag.model';
 
 @Table({ tableName: 'tag' })
 export class Tag extends Model<Tag, TagCreate> {
@@ -18,8 +18,8 @@ export class Tag extends Model<Tag, TagCreate> {
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
 
-  @BelongsToMany(() => Content, () => ContentTag)
-  content: Content[];
+  @BelongsToMany(() => Post, () => PostTag)
+  content: Post[];
 
   @Column({ type: DataType.DATE })
   createdAt;
