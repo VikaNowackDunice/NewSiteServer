@@ -30,22 +30,28 @@ export class AuthService {
     login,
     email,
     password,
+    img,
   }: LoginAuthorDto): Promise<{ login: string; token: string }> {
-    const existingAuthor = await this.authorRepository.findOne({
-      where: { login, email },
-    });
-    if (existingAuthor) {
-      throw new NotFoundException(' The author already exists');
+    try {
+      const existingAuthor = await this.authorRepository.findOne({
+        where: { login, email },
+      });
+      if (existingAuthor) {
+        throw new NotFoundException(' The author already exists');
+      }
+      const hashedPassword = await this.hashPassword(password);
+      const newAuthor = {
+        login,
+        email,
+        img,
+        password: hashedPassword,
+      };
+      const author = await this.authorRepository.create(newAuthor);
+      const token = await this.jwtauthService.sign(author.id);
+      return { login, token };
+    } catch (error) {
+      throw new NotFoundException(error.message);
     }
-    const hashedPassword = await this.hashPassword(password);
-    const newAuthor = {
-      login,
-      email,
-      password: hashedPassword,
-    };
-    const author = await this.authorRepository.create(newAuthor);
-    const token = await this.jwtauthService.sign(author.id);
-    return { login, token };
   }
 
   async login(dto: LoginAuthorDto): Promise<string> {

@@ -4,13 +4,12 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 import { User } from './site/author/user.model';
 import { Post } from './site/post/post.model';
-import { Tag } from './site/tag/tag.model';
-import { TagModule } from './site/tag/tag.module';
+import { Tag } from './site/post/tag.model';
 import { UserModule } from './site/author/author.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtAuthModule } from './site/author/jwt/jwt.module';
 import { PostModule } from './site/post/post.module';
-import { PostTag } from './site/PostTags/post-tag.model';
+import { PostTag } from './site/post/post-tag.model';
 
 @Module({
   imports: [
@@ -30,7 +29,6 @@ import { PostTag } from './site/PostTags/post-tag.model';
     }),
     UserModule,
     PostModule,
-    TagModule,
     JwtAuthModule,
     JwtModule,
   ],

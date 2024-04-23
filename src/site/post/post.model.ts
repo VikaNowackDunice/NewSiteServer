@@ -10,8 +10,8 @@ import {
 
 import { ContentCreate } from '../types/post';
 import { User } from '../author/user.model';
-import { Tag } from '../tag/tag.model';
-import { PostTag } from '../PostTags/post-tag.model';
+import { Tag } from './tag.model';
+import { PostTag } from './post-tag.model';
 
 @Table({ tableName: 'Post' })
 export class Post extends Model<Post, ContentCreate> {

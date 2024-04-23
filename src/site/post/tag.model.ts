@@ -7,8 +7,8 @@ import {
 } from 'sequelize-typescript';
 
 import { TagCreate } from '../types/tag';
-import { Post } from '../post/post.model';
-import { PostTag } from '../PostTags/post-tag.model';
+import { Post } from './post.model';
+import { PostTag } from './post-tag.model';
 
 @Table({ tableName: 'Tag' })
 export class Tag extends Model<Tag, TagCreate> {

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 
 import { Post } from './post.model';
 import { CreatPostDto } from '../dto/create-post.dto';
-import { Tag } from '../tag/tag.model';
+import { Tag } from './tag.model';
 import { User } from '../author/user.model';
 
 @Injectable()
@@ -15,11 +15,11 @@ export class PostService {
   async getAllContent(): Promise<Post[]> {
     try {
       const getAllContent = await this.contentRepository.findAll({
-        order: [['createdAt', 'DECS']],
+        order: [['createdAt', 'DESC']],
         include: [
           {
             model: User,
-            attributes: ['id', 'login'],
+            attributes: ['id', 'login', 'img'],
           },
           {
             model: Tag,
@@ -60,7 +60,7 @@ export class PostService {
   async updateContentOne(postDto: CreatPostDto, id: number): Promise<Post> {
     try {
       const [updateContent] = await this.contentRepository.update(
-        { content: postDto.content, theme: postDto.theme },
+        { content: postDto.content, theme: postDto.theme, img: postDto.img },
         { where: { id } },
       );
       if (updateContent === 0) {

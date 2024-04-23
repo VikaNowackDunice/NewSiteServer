@@ -5,9 +5,9 @@ import {
   Column,
   DataType,
 } from 'sequelize-typescript';
-import { Post } from '../post/post.model';
+import { Post } from './post.model';
 import { ContentTagCreate } from '../types/tags-post';
-import { Tag } from '../tag/tag.model';
+import { Tag } from './tag.model';
 
 @Table({ tableName: 'PostTag' })
 export class PostTag extends Model<PostTag, ContentTagCreate> {

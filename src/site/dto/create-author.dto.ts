@@ -32,4 +32,7 @@ export class LoginAuthorDto {
 
   @IsString()
   token?: string;
+
+  @IsString()
+  img: string;
 }
